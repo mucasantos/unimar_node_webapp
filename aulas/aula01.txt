@@ -27,6 +27,8 @@ NodeJS em 2 abordagens:
     --> problema: a senha esta sendo salva em texto comum!!
     Trabalhando com Sessions para validar o user
     ORM MYSQL
+    Crio o modelo conectado ao DB MYSQL e a partir dai, tenho acesso a varios metodos
+    Vou criar um modelo de dados com o Sequelize
 
 
 2. Criar APIRESTFull => tem as rotas

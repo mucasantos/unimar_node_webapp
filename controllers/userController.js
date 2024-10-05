@@ -1,6 +1,8 @@
 const db = require('../services/db_connect');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const Users = require('../models/user_model');
+const Produtos = require('../models/products_model');
 
 exports.viewInitialPage = (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'home.html'));

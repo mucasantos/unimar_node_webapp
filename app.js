@@ -12,6 +12,7 @@ const express = require('express');
 require('dotenv').config();
 const app = express();
 const cookieSession = require('cookie-session');
+const db = require('./services/db_connect');
 const {
   registerUser,
   loginUser,
@@ -39,6 +40,9 @@ app.get('/login', viewUserLogin);
 app.post('/login', loginUser);
 
 //Abrir a  porta e ouvir
+
+db.sync({ force: true });
+
 app.listen(PORT, () => {
   console.log('Servidor no ar com express na porta: ' + PORT);
 });
