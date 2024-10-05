@@ -9,7 +9,9 @@
  */
 
 const express = require('express');
+require('dotenv').config();
 const app = express();
+const cookieSession = require('cookie-session');
 const {
   registerUser,
   loginUser,
@@ -17,6 +19,7 @@ const {
   viewUserLogin,
   viewInitialPage
 } = require('./controllers/userController');
+const { userLogged } = require('./middlewares/user_is_logged');
 
 const PORT = 3004;
 
@@ -24,10 +27,12 @@ const PORT = 3004;
 app.use(express.static('public'));
 //Pegar as info do form (urlencoded)
 app.use(express.urlencoded({ extended: true }));
+//Adicionar o middleware de cookie-session
+app.use(cookieSession({ keys: [process.env.SECRET] }));
 
 //Rotas com express
 //Rota get ela envia uma VIEW
-app.get('/initial', viewInitialPage);
+app.get('/home', userLogged, viewInitialPage);
 app.get('/register', viewUserResgister);
 app.post('/register', registerUser);
 app.get('/login', viewUserLogin);

@@ -3,7 +3,7 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 
 exports.viewInitialPage = (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'initial.html'));
+  res.sendFile(path.join(__dirname, '../public', 'home.html'));
 };
 exports.viewUserResgister = (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));
@@ -61,6 +61,7 @@ exports.loginUser = (req, res) => {
     return res.status(400).json({ msg: 'Precisa preencher todos os campos!!' });
   }
 
+  //Toda hora preciso digitar os comandos SQL...
   const getAllUsers = 'SELECT * FROM usuarios WHERE email = ?';
 
   db.query(getAllUsers, [email], (err, results) => {
@@ -77,7 +78,8 @@ exports.loginUser = (req, res) => {
 
     bcrypt.compare(password, user.password, (err, isIquals) => {
       if (isIquals) {
-        res.redirect('/initial');
+        req.session.userID = user.id;
+        res.redirect('/home');
       } else {
         res.status(403).json({ msg: 'Email ou senha invalidos...' });
       }

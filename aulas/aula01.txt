@@ -25,6 +25,8 @@ NodeJS em 2 abordagens:
     Salvar dados no DB
     Redirecionando para outra pagina
     --> problema: a senha esta sendo salva em texto comum!!
+    Trabalhando com Sessions para validar o user
+    ORM MYSQL
 
 
 2. Criar APIRESTFull => tem as rotas
