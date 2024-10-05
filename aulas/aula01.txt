@@ -22,6 +22,9 @@ NodeJS em 2 abordagens:
 1. Criar o web app completo, API + Front (CSS/HTML)
     Sistema de login/cadastro  - MVC Pattern
     Instalar o MYSQL
+    Salvar dados no DB
+    Redirecionando para outra pagina
+    --> problema: a senha esta sendo salva em texto comum!!
 
 
 2. Criar APIRESTFull => tem as rotas

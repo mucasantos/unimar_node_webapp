@@ -3,11 +3,21 @@
  * 1. importar o pacote
  * 2. usr o pacote
  * 3. criar as minhas rotas
+ * 4. expor  uma pasta publica
+ * 5. expor o arquivo
+ * 6. conectar ao DB => preciso da dep mysql2
  */
 
 const express = require('express');
 const app = express();
-const path = require('path');
+const {
+  registerUser,
+  loginUser,
+  viewUserResgister,
+  viewUserLogin,
+  viewInitialPage
+} = require('./controllers/userController');
+
 const PORT = 3004;
 
 //Informar que tenho uma pasta publica
@@ -17,19 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 
 //Rotas com express
 //Rota get ela envia uma VIEW
-app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.post('/register', (req, res) => {
-  console.log(req.body);
-
-  //Conectar com um DB e salvar o nosso user
-  res.end('<html><h1>Registro Efetuado com sucesso!</h1></html>');
-});
-app.get('/login', (req, res) => {
-  res.end('<html><h1>Login Efetuado com sucesso!</h1></html>');
-});
+app.get('/initial', viewInitialPage);
+app.get('/register', viewUserResgister);
+app.post('/register', registerUser);
+app.get('/login', viewUserLogin);
+app.post('/login', loginUser);
 
 //Abrir a  porta e ouvir
 app.listen(PORT, () => {
