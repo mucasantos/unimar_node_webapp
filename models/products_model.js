@@ -11,20 +11,16 @@ const Produtos = database.define('products', {
     allowNull: false,
     primaryKey: true
   },
-  name: {
+  title: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  type: {
+  image: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  category: {
+  description: {
     type: Sequelize.STRING,
-    allowNull: false
-  },
-  quantity: {
-    type: Sequelize.INTEGER,
     allowNull: false
   }
 });

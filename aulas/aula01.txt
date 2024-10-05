@@ -30,9 +30,16 @@ NodeJS em 2 abordagens:
     Crio o modelo conectado ao DB MYSQL e a partir dai, tenho acesso a varios metodos
     Vou criar um modelo de dados com o Sequelize
 
+    ---> 
+    Utilizar o ORM Sequelize
+    Limpar no codigo - melhorar
+    Criar uma tela de cadastro de produtos
+
+    ---> Proxima aula: finalizar o Sistema full lendo os produtos do banco de dados
 
 2. Criar APIRESTFull => tem as rotas
     Serão  consumidas por: mobile, web, iot ...
+    MongoDB
 
 
 Resumo do que veremos

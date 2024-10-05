@@ -2,60 +2,51 @@ const db = require('../services/db_connect');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const Users = require('../models/user_model');
-const Produtos = require('../models/products_model');
+const { USE } = require('sequelize/lib/index-hints');
+const login = require('../views/login');
+const userRegister = require('../views/user_register');
+const products = require('../views/products');
 
 exports.viewInitialPage = (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'home.html'));
+  res.send(products());
 };
 exports.viewUserResgister = (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  res.send(userRegister());
 };
 
 exports.viewUserLogin = (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'login.html'));
+  res.send(login(req));
 };
 
-exports.registerUser = (req, res) => {
+exports.registerUser = async (req, res) => {
   const { name, password, email, country } = req.body;
 
   //Verificar campos se vieram!
   if (!name || !email || !password || !country) {
     return res.status(400).json({ msg: 'Precisa preencher todos os campos!!' });
   }
+  //Antes de criar tem q verificar se existe na base
+  const foundUserByEmail = await Users.findOne({ where: { email: email } });
 
-  //Regra de negocio => o usuario pode ter o mesmo nome no entanto, o email precisa ser [unico]
-
-  const checkEmailQuery = 'SELECT email FROM usuarios WHERE email =  ?';
-  db.query(checkEmailQuery, [email], (err, results) => {
-    if (err) {
-      return res.status(500).json({ msg: 'Erro ao pesquisar no   DB...!!', error: err });
-    }
-
-    if (results.length > 0) {
-      return res.status(400).json({ msg: 'Email ja existe no DB!!' });
-    }
-    const insertUserQuery =
-      'INSERT INTO usuarios  (name,  password, email,country) VALUES (?,?,?,?)';
-
-    //Criptografar a senha e depois salvar no DB!
-
+  if (foundUserByEmail) {
+    return res.status(400).json({ msg: 'Email ja existe no DB!!' });
+  } else {
     bcrypt.hash(password, 10, (err, hash) => {
+      Users.password = hash;
       // terei acesso a senha criptografada
-
-      db.query(insertUserQuery, [name, hash, email, country], (err, results) => {
-        if (err) {
-          console.log(err);
-          res.send('<html><h1>Erro ao salvar usuario no DB!!</h1></html>');
-        } else {
-          console.log(results);
-
-          res.send('<html><h1>Registro Efetuado com sucesso!</h1></html>');
-        }
+      Users.create({
+        name: name,
+        email: email,
+        country: country,
+        password: hash
+      }).then((user) => {
+        user.password = undefined;
+        res.send({ msg: 'Usuario criado com sucesso!', user: user });
       });
     });
-  });
+  }
 };
-exports.loginUser = (req, res) => {
+exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   //Verificar campos se vieram!
@@ -63,28 +54,17 @@ exports.loginUser = (req, res) => {
     return res.status(400).json({ msg: 'Precisa preencher todos os campos!!' });
   }
 
-  //Toda hora preciso digitar os comandos SQL...
-  const getAllUsers = 'SELECT * FROM usuarios WHERE email = ?';
+  //Antes de criar tem q verificar se existe na base
+  const foundUserByEmail = await Users.findOne({ where: { email: email } });
 
-  db.query(getAllUsers, [email], (err, results) => {
-    if (err) {
-      return res.status(500).json({ msg: 'Erro ao pesquisar no   DB...!!', error: err });
-    }
-
-    if (results.length === 0) {
-      return res.status(400).json({ msg: 'Email nao existe no DB!!' });
-    }
-
-    const user = results[0];
-    console.log(user.password);
-
-    bcrypt.compare(password, user.password, (err, isIquals) => {
+  if (foundUserByEmail) {
+    bcrypt.compare(password, foundUserByEmail.password, (err, isIquals) => {
       if (isIquals) {
-        req.session.userID = user.id;
+        req.session.userID = foundUserByEmail.id;
         res.redirect('/home');
       } else {
         res.status(403).json({ msg: 'Email ou senha invalidos...' });
       }
     });
-  });
+  }
 };
