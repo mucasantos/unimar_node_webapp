@@ -21,6 +21,7 @@ Nodemon => reinicia o server
 NodeJS em 2 abordagens:
 1. Criar o web app completo, API + Front (CSS/HTML)
     Sistema de login/cadastro  - MVC Pattern
+    Instalar o MYSQL
 
 
 2. Criar APIRESTFull => tem as rotas
