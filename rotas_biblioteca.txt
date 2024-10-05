@@ -1,0 +1,12 @@
+rotas
+
+login
+cadastro
+alterar cadastro do uuser
+
+add livro
+listar os livros
+deletar deletar um livro
+editar info de um  livro
+
+...

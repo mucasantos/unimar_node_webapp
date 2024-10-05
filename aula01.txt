@@ -1,0 +1,39 @@
+Fundamentos - NodeJS
+base Javascript => ambiente Javascript - mecanismo V8 do Google
+Caracteristicas:
+Assincrono e orientado a eventos
+
+Vantagens
+Reutilizar codigo/aprendizado
+Frontend => React, Vue, ... 
+Mobile => React Native
+Backend => Node.js
+
+Servicos nuvem
+AWS
+GOOGLE
+-- Free / Planos pagos
+Vercel
+Render
+
+Nodemon => reinicia o server
+
+NodeJS em 2 abordagens:
+1. Criar o web app completo, API + Front (CSS/HTML)
+    Sistema de login/cadastro  - MVC Pattern
+
+
+2. Criar APIRESTFull => tem as rotas
+    Serão  consumidas por: mobile, web, iot ...
+
+
+Resumo do que veremos
+1. Parte basica de Node - conceitos
+    Conceitos de APIREST e Verbos HTTP > GETE, POST, PATCH e DELETE
+2. Manip de rotas e middleware
+    1. Servir HTML na rota - OK
+    2. Servir os arquivos: HTML CSS Javascript das views
+3. Interar com DB - MYSQL / MondoDB
+4. Autentecacao
+5. Testes ** 
+6. Projeto final
