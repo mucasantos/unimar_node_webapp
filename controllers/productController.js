@@ -19,3 +19,5 @@ exports.createProduct = async (req, res) => {
 exports.viewAddProducts = (req, res) => {
   res.send(product_add());
 };
+
+//Criar o controler para mostrar todos os produtos e enviar esta lista de produtos para a tela
