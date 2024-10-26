@@ -1,7 +1,32 @@
 const layout = require('./main_layout');
 
-module.exports = (req, res) => {
-  console.log(req);
+module.exports = (produtos) => {
+  console.log(produtos);
+
+  //pegar cadda produto de nossa lista - percorrer a nossa lista, e
+  //devolvver o card....
+  //map => faz iteração com a lista, e devolve ela modificada - como eu
+  //queira modificar
+  //IDEIA => Passar uma lista de produtos (JSON) => O MAP me devolve uma
+  //lista de CARD HTML de produtos
+
+  const allProducts = produtos
+    .map((produto) => {
+      return `
+    <div class="w3-quarter">
+          <img
+            src=${produto.image}
+            alt=${produto.title}
+            style="width: 100%"
+          />
+          <h3>${produto.title}</h3>
+          <p>${produto.description}</p>
+        </div>
+
+`;
+    })
+    .join('');
+
   return layout({
     content: `
          <nav
@@ -27,87 +52,12 @@ module.exports = (req, res) => {
     <div class="w3-main w3-content w3-padding" style="max-width: 1200px; margin-top: 100px">
       <!-- First Photo Grid-->
       <div class="w3-row-padding w3-padding-16 w3-center" id="food">
-        <div class="w3-quarter">
-          <img
-            src="https://www.w3schools.com/w3images/sandwich.jpg"
-            alt="Sandwich"
-            style="width: 100%"
-          />
-          <h3>The Perfect Sandwich, A Real NYC Classic</h3>
-          <p>Just some random text, lorem ipsum text praesent tincidunt ipsum lipsum.</p>
-        </div>
-        <div class="w3-quarter">
-          <img src="https://www.w3schools.com/w3images/steak.jpg" alt="Steak" style="width: 100%" />
-          <h3>Let Me Tell You About This Steak</h3>
-          <p>
-            Once again, some random text to lorem lorem lorem lorem ipsum text praesent tincidunt
-            ipsum lipsum.
-          </p>
-        </div>
-        <div class="w3-quarter">
-          <img
-            src="https://www.w3schools.com/w3images/cherries.jpg"
-            alt="Cherries"
-            style="width: 100%"
-          />
-          <h3>Cherries, interrupted</h3>
-          <p>Lorem ipsum text praesent tincidunt ipsum lipsum.</p>
-          <p>What else?</p>
-        </div>
-        <div class="w3-quarter">
-          <img
-            src="https://www.w3schools.com/w3images/wine.jpg"
-            alt="Pasta and Wine"
-            style="width: 100%"
-          />
-          <h3>Once Again, Robust Wine and Vegetable Pasta</h3>
-          <p>Lorem ipsum text praesent tincidunt ipsum lipsum.</p>
-        </div>
-      </div>
+    
+      <!-- Nosso conte[udo dinamico -->
+       
+        ${allProducts}
 
-      <!-- Second Photo Grid-->
-      <div class="w3-row-padding w3-padding-16 w3-center">
-        <div class="w3-quarter">
-          <img
-            src="https://www.w3schools.com/w3images/popsicle.jpg"
-            alt="Popsicle"
-            style="width: 100%"
-          />
-          <h3>All I Need Is a Popsicle</h3>
-          <p>Lorem ipsum text praesent tincidunt ipsum lipsum.</p>
-        </div>
-        <div class="w3-quarter">
-          <img
-            src="https://www.w3schools.com/w3images/salmon.jpg"
-            alt="Salmon"
-            style="width: 100%"
-          />
-          <h3>Salmon For Your Skin</h3>
-          <p>
-            Once again, some random text to lorem lorem lorem lorem ipsum text praesent tincidunt
-            ipsum lipsum.
-          </p>
-        </div>
-        <div class="w3-quarter">
-          <img
-            src="https://www.w3schools.com/w3images/sandwich.jpg"
-            alt="Sandwich"
-            style="width: 100%"
-          />
-          <h3>The Perfect Sandwich, A Real Classic</h3>
-          <p>Just some random text, lorem ipsum text praesent tincidunt ipsum lipsum.</p>
-        </div>
-        <div class="w3-quarter">
-          <img
-            src="https://www.w3schools.com/w3images/croissant.jpg"
-            alt="Croissant"
-            style="width: 100%"
-          />
-          <h3>Le French</h3>
-          <p>Lorem lorem lorem lorem ipsum text praesent tincidunt ipsum lipsum.</p>
-        </div>
-      </div>
-
+      </div>  
       <!-- Pagination -->
       <div class="w3-center w3-padding-32">
         <div class="w3-bar">

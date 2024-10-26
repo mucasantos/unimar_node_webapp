@@ -6,16 +6,26 @@ const { USE } = require('sequelize/lib/index-hints');
 const login = require('../views/login');
 const userRegister = require('../views/user_register');
 const products = require('../views/products');
+const Produtos = require('../models/products_model');
 
-exports.viewInitialPage = (req, res) => {
-  res.send(products());
+exports.viewInitialPage = async (req, res) => {
+  //Vou ao DB, pego todos os produtos e envio para tela de produtos!
+  //1. Pego os produtos no DB
+  const produtos = await Produtos.findAll(); //1ms ...
+
+  //2. Envio os produtos para a nossa view
+  //renderiza a tela de produtos
+  res.send(products(produtos));
 };
 exports.viewUserResgister = (req, res) => {
   res.send(userRegister());
 };
 
 exports.viewUserLogin = (req, res) => {
-  res.send(login(req));
+  const errorMsg = req.query.error || null;
+
+  //Renderizo a minha tela de login
+  res.send(login(req, errorMsg));
 };
 
 exports.registerUser = async (req, res) => {
@@ -49,7 +59,10 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log(req.body);
+
   //Verificar campos se vieram!
+  //Esta validação seria por segurança, caso o front nao adicione
   if (!email || !password) {
     return res.status(400).json({ msg: 'Precisa preencher todos os campos!!' });
   }
@@ -61,10 +74,14 @@ exports.loginUser = async (req, res) => {
     bcrypt.compare(password, foundUserByEmail.password, (err, isIquals) => {
       if (isIquals) {
         req.session.userID = foundUserByEmail.id;
-        res.redirect('/home');
+
+        //login com sucesso, nos leva para a pagina home
+        return res.redirect('/home');
       } else {
-        res.status(403).json({ msg: 'Email ou senha invalidos...' });
+        return res.redirect('/login?error=Usuário ou senha incorretos');
       }
     });
+  } else {
+    return res.redirect('/login?error=Usuário não encontrado...');
   }
 };
